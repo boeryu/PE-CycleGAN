@@ -4,7 +4,7 @@
 torch2.4_cuda12.1
 # 数据集
 使用了[Bio-LFSR](https://zenodo.org/records/7233421)数据集，读者请自行下载
-超分辨率与低分辨率图像数据[重建代码](https://github.com/THU-IBCS/VsLFM-master)是
+超分辨率与低分辨率图像数据[重建代码](https://github.com/THU-IBCS/VsLFM-master)
 
 # CycleGAN
 基于精简的[CycleGAN](https://github.com/aitorzip/PyTorch-CycleGAN.git)进行了改动
@@ -32,7 +32,7 @@ torch2.4_cuda12.1
 --cuda
 ```
 
-### ### Testing
+### Testing
 
 打开test文件将参数设置为
 
