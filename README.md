@@ -7,9 +7,7 @@
 
 ## CycleGAN
 基于精简的[CycleGAN](https://github.com/aitorzip/PyTorch-CycleGAN.git)模型，我们将其改成适用于三维图像的模型
-### Training
-#### Datasets
-
+### 1.Training
 在数据集里放入所需的超分辨率图像与低分辨率图像(例：A域代表SR图像，B域代表LR图像)
 
 ```
@@ -31,7 +29,7 @@
 --cuda
 ```
 
-### Testing
+### 2.Testing
 
 打开test文件将参数设置为
 
