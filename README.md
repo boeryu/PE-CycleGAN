@@ -6,7 +6,7 @@
 训练与测试的数据使用了由清华大学成像与智能技术实验室戴琼海院士团队发布的国际首个大规模多样本的显微光场超分辨率数据集[Bio-LFSR](https://zenodo.org/records/7233421)数据集，其中包含了训练与测试所用的超分辨率与低分辨率样本图像，重建图像的代码来自于其团队开发的[VsLFM-master](https://github.com/THU-IBCS/VsLFM-master)
 
 ## CycleGAN
-基于精简的二维[CycleGAN](https://github.com/aitorzip/PyTorch-CycleGAN.git)模型，我们将其改成适用于三维图像的模型
+基于精简的二维[CycleGAN](https://github.com/aitorzip/PyTorch-CycleGAN.git)模型，我们将其改成适用于三维图像的模型。
 ### 1.Training
 在数据集里放入训练所需的超分辨率图像与低分辨率图像(例：A域代表SR图像，B域代表LR图像)，我们将图片顺序打乱进行无监督学习
 
@@ -47,6 +47,11 @@ output/<datasets name>/netG_B2A.pth
 ## PE-CycleGAN
 
 该文件夹内容是物理模型嵌入的CycleGAN，我们仅训练了由低分辨率图像转换为超分辨率图像的模型。在测试中，我们也仅获得由低分辨率图像计算出的超分辨率图像；用于嵌入模型的高斯核由gaussian.m文件生成。
+
+## Results
+
+我们准备了两个模型分别用15组超、低分辨率图像训练出的模型与测试用的图像，并上传至百度网盘，请读者自行[下载](通过网盘分享的文件：PE-CycleGAN
+链接: https://pan.baidu.com/s/1Ev7ou1Ew5eNQn58ikqgcKQ?pwd=ahjw 提取码: ahjw)并运行代码查看结果
 
 ## 致谢
 
