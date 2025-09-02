@@ -50,8 +50,7 @@ output/<datasets name>/netG_B2A.pth
 
 ## Results
 
-我们准备了两个模型分别用15组超、低分辨率图像训练出的模型与测试用的图像，并上传至百度网盘，请读者自行[下载](通过网盘分享的文件：PE-CycleGAN
-链接: https://pan.baidu.com/s/1Ev7ou1Ew5eNQn58ikqgcKQ?pwd=ahjw 提取码: ahjw)并运行代码查看结果
+我们准备了两个模型分别用15组超、低分辨率图像训练出的模型与测试用的图像，并上传至百度网盘，请读者自行[下载](https://pan.baidu.com/s/1Ev7ou1Ew5eNQn58ikqgcKQ?pwd=ahjw )并运行代码查看结果
 
 ## 致谢
 
