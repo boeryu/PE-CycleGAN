@@ -48,9 +48,9 @@ output/<datasets name>/netG_B2A.pth
 
 该文件夹内容是物理模型嵌入的CycleGAN，我们仅训练了由低分辨率图像转换为超分辨率图像的模型。在测试中，我们也仅获得由低分辨率图像计算出的超分辨率图像；用于嵌入模型的高斯核由gaussian.m文件生成。
 
-## Results
+## Results!
 
-我们准备了两个模型分别用15组超、低分辨率图像训练出的模型与测试用的图像，并上传至百度网盘，请读者自行[下载](https://pan.baidu.com/s/1Ev7ou1Ew5eNQn58ikqgcKQ?pwd=ahjw )并运行代码查看结果!![图片1](E:\Users\86199\Documents\GitHub\PE-CycleGAN\图片1.png)
+我们准备了两个模型分别用15组超、低分辨率图像训练出的模型与测试用的图像，并上传至百度网盘，请读者自行[下载](https://pan.baidu.com/s/1Ev7ou1Ew5eNQn58ikqgcKQ?pwd=ahjw )并运行代码查看结果
 
 ## 致谢
 
