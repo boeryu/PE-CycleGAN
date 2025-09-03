@@ -48,7 +48,7 @@ def load_mat_v73(path, key):
 
 
 
-fixed_kernel = load_mat_v73(r'/data/OT-CycleGAN-master-3D/gausskernel555.mat', 'gauss3d')
+fixed_kernel = load_mat_v73(r'gausskernel.mat', 'gauss3d')
 class MedicalAdaptiveBlur3D(torch.nn.Module):
     def __init__(self, kernel):
         super().__init__()
@@ -237,11 +237,11 @@ for epoch in range(opt.epoch, opt.n_epochs):
 
     if epoch % 100==0:
         # Save models checkpoints
-        io.savemat(f'output/Z3/psf_epoch{epoch}.mat',
+        io.savemat(f'output/Z/psf_epoch{epoch}.mat',
                    {'psf': netG_A2B.psf_kernel.detach().cpu().numpy().squeeze()})
-        torch.save(netG_B2A.state_dict(), f'output/Z3/netG_B2A_{epoch}.pth')
-        torch.save(netD_A.state_dict(), f'output/Z3/netD_A_{epoch}.pth')
-        torch.save(netD_B.state_dict(), f'output/Z3/netD_B_{epoch}.pth')
+        torch.save(netG_B2A.state_dict(), f'output/Z/netG_B2A_{epoch}.pth')
+        torch.save(netD_A.state_dict(), f'output/Z/netD_A_{epoch}.pth')
+        torch.save(netD_B.state_dict(), f'output/Z/netD_B_{epoch}.pth')
 ###################################
 total_time=time.time()-start_time
 print(f"Total training time:{total_time:.2f} seconds")

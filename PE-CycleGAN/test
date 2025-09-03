@@ -30,26 +30,7 @@ device = torch.device("cuda" if opt.cuda and torch.cuda.is_available() else "cpu
 if device.type =='cuda':
     torch.backends.cudnn.benchmark = True
 
-def load_mat_v73(path, key):
-    with h5py.File(path, 'r') as f:
-        data = np.array(f[key]).transpose()
-    return data.astype(np.float32)
-fixed_kernel = load_mat_v73(r'E:\results\PE-CycleGAN\gausskernel17.mat', 'gauss3d')
-
-class MedicalAdaptiveBlur3D(torch.nn.Module):
-    def __init__(self, kernel):
-        super().__init__()
-        self.conv3d = torch.nn.Conv3d(1, 1, kernel_size=kernel.shape, padding='same')
-        with torch.no_grad():
-            self.conv3d.weight.data = torch.from_numpy(kernel).unsqueeze(0).unsqueeze(0)
-            self.conv3d.bias.data.zero_()
-
-    def forward(self, x):
-        return self.conv3d(x)
-
 # Initialize models
-
-blur= MedicalAdaptiveBlur3D(fixed_kernel).to(device)
 netG_B2A = Generator3D(opt.output_nc, opt.input_nc).to(device)
 
 def load_model(model,checkpoint_path):
@@ -81,6 +62,7 @@ def _auto_adjust_dims(tensor):
     elif tensor.dim()==5:
       pass
     return tensor
+
 test_dataset = VolumeDataset(
     root = opt.dataroot,
     transforms_=test_transform,
@@ -120,7 +102,7 @@ with torch.no_grad():
             vol_A=vol_A[np.newaxis,...]
 
         tifffile.imwrite(
-            os.path.join(output_dir_A,f'OT_FAKE_HR_batch{i}_sample{b}.tif'),
+            os.path.join(output_dir_A,f'PE_FAKE_HR_sample{b}.tif'),
             vol_A.astype(np.float32),
             imagej=True,
             metadata={'axes':'ZYX'}

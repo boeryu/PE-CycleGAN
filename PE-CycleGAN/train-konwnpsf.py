@@ -49,7 +49,7 @@ def load_mat_v73(path, key):
 
 
 # 加载核数据
-fixed_kernel = load_mat_v73(r'/data/OT-CycleGAN-master-3D/gausskernel17.mat', 'gauss3d')
+fixed_kernel = load_mat_v73(r'gausskernel.mat', 'gauss3d')
 ###### Definition of variables ######
 class MedicalAdaptiveBlur3D(torch.nn.Module):
    def __init__(self, kernel):
@@ -213,8 +213,8 @@ for epoch in range(opt.epoch, opt.n_epochs):
 
     if epoch % 100==0:
     # Save models checkpoints
-      torch.save(netG_B2A.state_dict(), f'output/ZGnoise/netG_B2A_{epoch}.pth')
-      torch.save(netD_A.state_dict(), f'output/ZGnoise/netD_A_{epoch}.pth')
+      torch.save(netG_B2A.state_dict(), f'output/Z/netG_B2A_{epoch}.pth')
+      torch.save(netD_A.state_dict(), f'output/Z/netD_A_{epoch}.pth')
 
 ###################################
 total_time=time.time()-start_time
