@@ -2,7 +2,7 @@
 
 本项目基于CycleGAN模型，在模型中嵌入点扩散函数替代深度学习生成器实现了更简单的由超分辨率到低分辨率的转化，降低了训练时计算成本，并且以高效、稳定的方式实现了计算超分辨率显微图像。该项目中有两个文件夹，分别是三维的CycleGAN模型代码和我们的PE-CycleGAN代码，文件夹中包含了Python文件和Matlab文件两种文件类型，文件运行环境配置是Conda(torch2.4_cuda12.1)
 
-## 数据集
+## Datasets
 训练与测试的数据使用了显微光场超分辨率数据集[Bio-LFSR](https://zenodo.org/records/7233421)数据集，其中包含了训练与测试所用的超分辨率与低分辨率样本图像，重建图像的代码来自于其团队开发的[VsLFM-master](https://github.com/THU-IBCS/VsLFM-master)
 
 ## CycleGAN
@@ -54,7 +54,7 @@ output/<datasets name>/netG_B2A.pth
 
 ## License
 
-This project is licensed under the GPL v3 License - see the [LICENSE.md]() file for details
+This project is licensed under the GPL v3 License - see the [LICENSE.md](https://github.com/boeryu/PE-CycleGAN/blob/main/LICENSE) file for details
 
 ## 致谢
 
