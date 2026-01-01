@@ -6,7 +6,7 @@ import time
 import torch.nn as nn
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
-
+import torch.nn.functional as F
 import numpy as np
 import torch
 
@@ -25,7 +25,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--epoch', type=int, default=0, help='starting epoch')
 parser.add_argument('--n_epochs', type=int, default=501, help='number of epochs of training')
 parser.add_argument('--batchSize', type=int, default=1, help='size of the batches')
-parser.add_argument('--dataroot', type=str, required=True,default='datasets/l2r/', help='root directory of the dataset')
+parser.add_argument('--dataroot', type=str, required=True,default='dat asets/l2r/', help='root directory of the dataset')
 parser.add_argument('--lr', type=float, default=0.00005, help='initial learning rate')
 parser.add_argument('--decay_epoch', type=int, default=50, help='epoch to start linearly decaying the learning rate to 0')
 parser.add_argument('--volume_shape', type=int,nargs=3, default=[16,256,256], help='size of the data crop (squared assumed)')
@@ -33,7 +33,7 @@ parser.add_argument('--input_nc', type=int, default=1, help='number of channels 
 parser.add_argument('--output_nc', type=int, default=1, help='number of channels of output data')
 parser.add_argument('--cuda', action='store_true', help='use GPU computation')
 parser.add_argument('--n_cpu', type=int, default=8, help='number of cpu threads to use during batch generation')
-parser.add_argument('--gpu_id', type=int, default=1, help='number of cpu threads to use during batch generation')
+parser.add_argument('--gpu_id', type=int, default=0, help='number of cpu threads to use during batch generation')
 opt = parser.parse_args()
 print(opt)
 
@@ -46,26 +46,29 @@ def load_mat_v73(path, key):
         data = np.array(f[key]).transpose()
     return data.astype(np.float32)
 
-
-
-fixed_kernel = load_mat_v73(r'gausskernel.mat', 'gauss3d')
+fixed_kernel = load_mat_v73(r'/data/PE-CycleGAN/gausskernel223.mat', 'gauss3d')
 class MedicalAdaptiveBlur3D(torch.nn.Module):
     def __init__(self, kernel):
         super().__init__()
-
+        self.kernel_size=kernel.shape
         self.psf_kernel = nn.Parameter(
-            torch.from_numpy(kernel*1E-4).unsqueeze(0).unsqueeze(0).float(),
+            #torch.from_numpy(kernel).unsqueeze(0).unsqueeze(0).float(),
+            torch.abs(torch.randn(1,1,self.kernel_size[0],self.kernel_size[1],self.kernel_size[2]))*1e-3,
             requires_grad=True
         )
-        self.conv3d = torch.nn.Conv3d(1, 1, kernel_size=kernel.shape, padding='same', bias=False)
-        self.conv3d.weight = self.psf_kernel
-
+        self.psf_kernel.data/=self.psf_kernel.data.sum()
     def forward(self, x):
-
-        self.conv3d.weight.data = torch.clamp(self.psf_kernel, min=0)
-        self.conv3d.weight.data /= self.conv3d.weight.data.sum() + 1e-6
-
-        return self.conv3d(x)
+        psf=torch.abs(self.psf_kernel)
+        normalized_kernel = psf/psf.sum()
+        pad=(self.kernel_size[0]-1)//2
+        pad_tuple=(pad,pad,pad,pad,pad,pad)
+        x_pad=F.pad(x,pad_tuple,mode='reflect')
+        output=F.conv3d(
+            input= x_pad,
+            weight=normalized_kernel,
+            padding=0)
+        output=torch.tanh(output)
+        return output
 netG_A2B = MedicalAdaptiveBlur3D(fixed_kernel).to(device)
 netG_B2A = Generator3D(opt.output_nc, opt.input_nc).to(device)
 netD_A = Discriminator3D(opt.input_nc).to(device)
@@ -237,11 +240,10 @@ for epoch in range(opt.epoch, opt.n_epochs):
 
     if epoch % 100==0:
         # Save models checkpoints
-        io.savemat(f'output/Z/psf_epoch{epoch}.mat',
-                   {'psf': netG_A2B.psf_kernel.detach().cpu().numpy().squeeze()})
-        torch.save(netG_B2A.state_dict(), f'output/Z/netG_B2A_{epoch}.pth')
-        torch.save(netD_A.state_dict(), f'output/Z/netD_A_{epoch}.pth')
-        torch.save(netD_B.state_dict(), f'output/Z/netD_B_{epoch}.pth')
+        torch.save(netG_A2B.state_dict() ,f'output/psf_epoch_{epoch}.pth')
+        torch.save(netG_B2A.state_dict(), f'output/netG_B2A_{epoch}.pth')
+        torch.save(netD_A.state_dict(), f'output/netD_A_{epoch}.pth')
+        torch.save(netD_B.state_dict(), f'output/netD_B_{epoch}.pth')
 ###################################
 total_time=time.time()-start_time
 print(f"Total training time:{total_time:.2f} seconds")
